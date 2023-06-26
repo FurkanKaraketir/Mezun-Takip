@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MezunTakip" parent="Theme.Material3.DayNight.NoActionBar" >
+
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">#2A3063</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#00C0FF</item>
+        <item name="colorSecondaryVariant">#6D58FC</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:color">#FFFFFF</item>
+
+
+    </style>
+
+
+
+</resources>
