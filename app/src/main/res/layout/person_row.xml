@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="20dp"
-                android:text="Furkan Karaketir">
+                android:text="">
 
             </TextView>
 
@@ -41,92 +41,128 @@
 
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/yearText"
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="2023">
+            android:text=""
+            android:visibility="gone">
 
         </TextView>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/cityText"
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="İstanbul">
+            android:text=""
+            android:visibility="gone">
 
         </TextView>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/schoolText"
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="Yıldız Teknik Üniverstesi">
+            android:text=""
+            android:visibility="gone">
 
         </TextView>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/fieldText"
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="Elektronik ve Haberleşme Mühendisliği">
+            android:text=""
+            android:visibility="gone">
 
         </TextView>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/stateOfGraduationText"
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="Mezun">
+            android:text=""
+            android:visibility="gone">
 
         </TextView>
 
         <TextView
-            android:visibility="gone"
-            android:id="@+id/phoneNumberText"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="5511450968">
-
-        </TextView>
-
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/emailText"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="furkankaraketir2005@gmail.com">
-
-        </TextView>
-
-        <TextView
-            android:visibility="gone"
             android:id="@+id/descriptionText"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="Ankarada Çalışıyor">
+            android:text=""
+            android:visibility="gone">
 
         </TextView>
+
+
+        <Button
+            android:id="@+id/phoneNumberText"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text=""
+            android:visibility="gone"
+            app:icon="@drawable/baseline_local_phone_24">
+
+        </Button>
+
+        <Button
+            android:id="@+id/emailText"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text=""
+            android:visibility="gone"
+            app:icon="@drawable/baseline_mail_outline_24">
+
+        </Button>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/editButton"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="@string/d_zenle"
+                android:visibility="gone"
+                app:icon="@drawable/baseline_edit_24">
+
+            </Button>
+
+            <Button
+                android:id="@+id/deleteButton"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="@string/sil"
+                android:visibility="gone"
+                app:icon="@drawable/baseline_delete_outline_24">
+
+            </Button>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

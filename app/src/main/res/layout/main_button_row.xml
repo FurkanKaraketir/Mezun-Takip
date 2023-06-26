@@ -8,19 +8,17 @@
     app:cardCornerRadius="10dp">
 
 
-        <TextView
-            android:id="@+id/yearName"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:textSize="18sp">
+    <TextView
+        android:id="@+id/yearName"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:textSize="18sp">
 
-        </TextView>
-
-
+    </TextView>
 
 
 </androidx.cardview.widget.CardView>

@@ -45,8 +45,13 @@ class MainActivity : ComponentActivity() {
             this.startActivity(intent)
         }
 
+        binding.searchPersonButton.setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            this.startActivity(intent)
+        }
 
-        db.collection("Years").addSnapshotListener { value, error ->
+
+        db.collection("Years").addSnapshotListener { value, _ ->
             yearList.clear()
             if (value != null) {
                 for (i in value) {

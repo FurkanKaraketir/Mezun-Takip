@@ -134,4 +134,13 @@
     <string name="kaydet">Kaydet</string>
     <string name="niversite_mezuniyet_durumu">Üniversite Mezuniyet Durumu</string>
     <string name="ki_ileri_ara">Kişileri Ara</string>
+    <string name="ara">Ara</string>
+    <string name="sme_g_re">İsme Göre</string>
+    <string name="y_la_g_re">Yıla Göre</string>
+    <string name="bulundu_u_le_g_re">Bulunduğu İle Göre</string>
+    <string name="niversiteye_g_re">Üniversiteye Göre</string>
+    <string name="b_l_me_g_re">Bölüme Göre</string>
+    <string name="d_zenle">Düzenle</string>
+    <string name="ki_i_d_zenle">Kişi Düzenle</string>
+    <string name="sil">Sil</string>
 </resources>

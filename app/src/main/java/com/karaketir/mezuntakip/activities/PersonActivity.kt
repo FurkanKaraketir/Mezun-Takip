@@ -1,9 +1,8 @@
 package com.karaketir.mezuntakip.activities
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -11,11 +10,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.karaketir.mezuntakip.R
-import com.karaketir.mezuntakip.adapters.MainAdapter
 import com.karaketir.mezuntakip.adapters.PersonAdapter
 import com.karaketir.mezuntakip.databinding.ActivityPersonBinding
-import com.karaketir.mezuntakip.databinding.PersonRowBinding
 import com.karaketir.mezuntakip.models.Person
 
 class PersonActivity : AppCompatActivity() {
@@ -50,13 +46,14 @@ class PersonActivity : AppCompatActivity() {
         if (year != null) {
             db.collection("People").whereEqualTo("year", year.toInt())
                 .addSnapshotListener { value, error ->
-                    if (error!=null){
+                    if (error != null) {
                         println(error.localizedMessage)
                     }
                     personList.clear()
                     if (value != null) {
                         for (i in value) {
 
+                            val newID = i.id
                             val newName = i.get("name").toString()
                             val newYear = i.get("year").toString().toInt()
                             val newCity = i.get("city").toString()
@@ -68,6 +65,7 @@ class PersonActivity : AppCompatActivity() {
                             val newDescription = i.get("description").toString()
 
                             val newPerson = Person(
+                                newID,
                                 newName,
                                 newYear,
                                 newCity,

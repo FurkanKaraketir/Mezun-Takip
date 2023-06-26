@@ -1,6 +1,7 @@
 package com.karaketir.mezuntakip.models
 
 class Person(
+    var personID: String,
     var name: String,
     var year: Int,
     var city: String,

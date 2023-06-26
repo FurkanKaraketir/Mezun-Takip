@@ -1,13 +1,18 @@
 package com.karaketir.mezuntakip.adapters
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.karaketir.mezuntakip.R
+import com.karaketir.mezuntakip.activities.EditPersonActivity
 import com.karaketir.mezuntakip.databinding.PersonRowBinding
 import com.karaketir.mezuntakip.models.Person
 
@@ -15,6 +20,11 @@ import com.karaketir.mezuntakip.models.Person
 class PersonAdapter(
     private val personList: ArrayList<Person>
 ) : RecyclerView.Adapter<PersonAdapter.PersonHolder>() {
+
+    private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
+
+
     class PersonHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = PersonRowBinding.bind(itemView)
     }
@@ -31,6 +41,9 @@ class PersonAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: PersonHolder, position: Int) {
+        db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+
         with(holder) {
             val item = personList[position]
             val name = binding.nameText
@@ -43,6 +56,8 @@ class PersonAdapter(
             val field = binding.fieldText
             val stateOfGraduation = binding.stateOfGraduationText
             val description = binding.descriptionText
+            val editButton = binding.editButton
+            val deleteButton = binding.deleteButton
 
             val downButton = binding.downButtton
 
@@ -65,7 +80,7 @@ class PersonAdapter(
                 holder.itemView.context.startActivity(callIntent)
             }
 
-            description.text = item.description
+            description.text = "Ek Not: " + item.description
 
             downButton.setOnClickListener {
                 a = !a
@@ -79,6 +94,8 @@ class PersonAdapter(
                     field.visibility = View.VISIBLE
                     stateOfGraduation.visibility = View.VISIBLE
                     description.visibility = View.VISIBLE
+                    editButton.visibility = View.VISIBLE
+                    deleteButton.visibility = View.VISIBLE
 
                 } else {
                     year.visibility = View.GONE
@@ -89,10 +106,59 @@ class PersonAdapter(
                     field.visibility = View.GONE
                     stateOfGraduation.visibility = View.GONE
                     description.visibility = View.GONE
+                    editButton.visibility = View.GONE
+                    deleteButton.visibility = View.GONE
                 }
 
             }
 
+            editButton.setOnClickListener {
+
+                val newIntent = Intent(holder.itemView.context, EditPersonActivity::class.java)
+                newIntent.putExtra("personID", item.personID)
+                holder.itemView.context.startActivity(newIntent)
+
+            }
+
+            deleteButton.setOnClickListener {
+
+                val deleteAlertDialog = AlertDialog.Builder(holder.itemView.context)
+                deleteAlertDialog.setTitle("Kişiyi Sil")
+                deleteAlertDialog.setMessage("Kişiyi Silmek İstediğinize Emin misiniz?")
+                deleteAlertDialog.setPositiveButton("Kişiyi Sil") { _, _ ->
+
+                    db.collection("People").document(item.personID).delete().addOnSuccessListener {
+                        Toast.makeText(
+                            holder.itemView.context, "İşlem Başarılı", Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+
+                }
+                deleteAlertDialog.setNegativeButton("İptal") { _, _ ->
+
+                }
+                deleteAlertDialog.show()
+
+
+            }
+
+            email.setOnClickListener {
+
+                val intent = Intent(Intent.ACTION_VIEW)
+                val data = Uri.parse(
+                    "mailto:${item.email}?subject="
+                )
+                intent.data = data
+                holder.itemView.context.startActivity(intent)
+
+            }
+
+
         }
+
+
     }
+
+
 }
