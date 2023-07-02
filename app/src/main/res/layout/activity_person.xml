@@ -14,5 +14,17 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/excelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="30dp"
+        android:text="@string/excel_e_aktar"
+        app:icon="@drawable/baseline_save_alt_24">
+
+    </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
+
 
 </RelativeLayout>

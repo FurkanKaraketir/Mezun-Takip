@@ -1,8 +1,12 @@
 package com.karaketir.mezuntakip.activities
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -13,14 +17,36 @@ import com.google.firebase.ktx.Firebase
 import com.karaketir.mezuntakip.adapters.PersonAdapter
 import com.karaketir.mezuntakip.databinding.ActivityPersonBinding
 import com.karaketir.mezuntakip.models.Person
+import com.karaketir.mezuntakip.services.addData
+import com.karaketir.mezuntakip.services.createExcel
+import com.karaketir.mezuntakip.services.createSheetHeader
+import com.karaketir.mezuntakip.services.getHeaderStyle
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
 class PersonActivity : AppCompatActivity() {
+
+    init {
+        System.setProperty(
+            "org.apache.poi.javax.xml.stream.XMLInputFactory",
+            "com.fasterxml.aalto.stax.InputFactoryImpl"
+        )
+        System.setProperty(
+            "org.apache.poi.javax.xml.stream.XMLOutputFactory",
+            "com.fasterxml.aalto.stax.OutputFactoryImpl"
+        )
+        System.setProperty(
+            "org.apache.poi.javax.xml.stream.XMLEventFactory",
+            "com.fasterxml.aalto.stax.EventFactoryImpl"
+        )
+    }
+
 
     private lateinit var binding: ActivityPersonBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: PersonAdapter
     private var personList = ArrayList<Person>()
-
+    private val workbook = XSSFWorkbook()
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
@@ -36,6 +62,7 @@ class PersonActivity : AppCompatActivity() {
         recyclerView = binding.personRecycler
 
         val layoutManager = LinearLayoutManager(applicationContext)
+        val excelButton = binding.excelButton
 
         recyclerView.layoutManager = layoutManager
         recyclerViewAdapter = PersonAdapter(personList)
@@ -63,7 +90,7 @@ class PersonActivity : AppCompatActivity() {
                             val newField = i.get("field").toString()
                             val newGraduate = i.get("graduation") as Boolean
                             val newDescription = i.get("description").toString()
-
+                            val newPhoto = i.get("photoURL").toString()
                             val newPerson = Person(
                                 newID,
                                 newName,
@@ -74,7 +101,8 @@ class PersonActivity : AppCompatActivity() {
                                 newSchool,
                                 newField,
                                 newGraduate,
-                                newDescription
+                                newDescription,
+                                newPhoto
                             )
 
                             personList.add(newPerson)
@@ -84,5 +112,39 @@ class PersonActivity : AppCompatActivity() {
                 }
         }
 
+        val sheet: Sheet = workbook.createSheet("Sayfa 1")
+
+        val cellStyle = getHeaderStyle(workbook)
+
+        createSheetHeader(cellStyle, sheet)
+
+
+        excelButton.setOnClickListener {
+            addData(
+                sheet, this, workbook, personList
+            )
+
+            askForPermissions()
+        }
+
+
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                createExcel(this, workbook)
+            }
+        }
+
+    private fun askForPermissions() {
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        } else {
+            createExcel(this, workbook)
+        }
     }
 }

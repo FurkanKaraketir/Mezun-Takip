@@ -1,10 +1,14 @@
 package com.karaketir.mezuntakip.activities
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -16,10 +20,33 @@ import com.karaketir.mezuntakip.R
 import com.karaketir.mezuntakip.adapters.PersonAdapter
 import com.karaketir.mezuntakip.databinding.ActivitySearchBinding
 import com.karaketir.mezuntakip.models.Person
+import com.karaketir.mezuntakip.services.addData
+import com.karaketir.mezuntakip.services.createExcel
+import com.karaketir.mezuntakip.services.createSheetHeader
+import com.karaketir.mezuntakip.services.getHeaderStyle
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.util.Locale
 
 
 class SearchActivity : AppCompatActivity() {
+
+
+    init {
+        System.setProperty(
+            "org.apache.poi.javax.xml.stream.XMLInputFactory",
+            "com.fasterxml.aalto.stax.InputFactoryImpl"
+        )
+        System.setProperty(
+            "org.apache.poi.javax.xml.stream.XMLOutputFactory",
+            "com.fasterxml.aalto.stax.OutputFactoryImpl"
+        )
+        System.setProperty(
+            "org.apache.poi.javax.xml.stream.XMLEventFactory",
+            "com.fasterxml.aalto.stax.EventFactoryImpl"
+        )
+    }
+
 
     private lateinit var binding: ActivitySearchBinding
     private var selection = 1
@@ -27,6 +54,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: PersonAdapter
+    private val workbook = XSSFWorkbook()
 
     private var filteredList = ArrayList<Person>()
     private var personList = ArrayList<Person>()
@@ -41,6 +69,8 @@ class SearchActivity : AppCompatActivity() {
         db = Firebase.firestore
 
         recyclerView = binding.searchRecyclerView
+        val excelButton = binding.excelButton
+
         setupRecyclerView(personList)
         val searchEditText = binding.searchEditText
 
@@ -72,6 +102,21 @@ class SearchActivity : AppCompatActivity() {
         }
 
 
+        val sheet: Sheet = workbook.createSheet("Sayfa 1")
+
+        val cellStyle = getHeaderStyle(workbook)
+
+        createSheetHeader(cellStyle, sheet)
+
+
+        excelButton.setOnClickListener {
+            addData(
+                sheet, this, workbook, filteredList
+            )
+
+            askForPermissions()
+        }
+
         db.collection("People").addSnapshotListener { value, _ ->
             personList.clear()
             if (value != null) {
@@ -87,6 +132,8 @@ class SearchActivity : AppCompatActivity() {
                     val newField = i.get("field").toString()
                     val newGraduate = i.get("graduation") as Boolean
                     val newDescription = i.get("description").toString()
+                    val newPhoto = i.get("photoURL").toString()
+
 
                     val newPerson = Person(
                         newID,
@@ -98,7 +145,8 @@ class SearchActivity : AppCompatActivity() {
                         newSchool,
                         newField,
                         newGraduate,
-                        newDescription
+                        newDescription,
+                        newPhoto
                     )
 
                     personList.add(newPerson)
@@ -177,6 +225,24 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerViewAdapter = PersonAdapter(list)
         recyclerView.adapter = recyclerViewAdapter
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                createExcel(this, workbook)
+            }
+        }
+
+    private fun askForPermissions() {
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        } else {
+            createExcel(this, workbook)
+        }
     }
 
 }

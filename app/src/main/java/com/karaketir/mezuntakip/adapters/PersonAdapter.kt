@@ -15,6 +15,8 @@ import com.karaketir.mezuntakip.R
 import com.karaketir.mezuntakip.activities.EditPersonActivity
 import com.karaketir.mezuntakip.databinding.PersonRowBinding
 import com.karaketir.mezuntakip.models.Person
+import com.karaketir.mezuntakip.services.glide
+import com.karaketir.mezuntakip.services.placeHolderYap
 
 
 class PersonAdapter(
@@ -47,6 +49,7 @@ class PersonAdapter(
         with(holder) {
             val item = personList[position]
             val name = binding.nameText
+            val photo = binding.personPhotoView
             var a = false
             val year = binding.yearText
             val city = binding.cityText
@@ -61,10 +64,11 @@ class PersonAdapter(
 
             val downButton = binding.downButtton
 
+            photo.glide(item.photoURL, placeHolderYap(holder.itemView.context))
             name.text = item.name
             year.text = "Lise Mezuniyet Yılı: " + item.year.toString()
             city.text = "Bulunduğu İl: " + item.city
-            number.text = item.number.toString()
+            number.text = "+90"+item.number.toString()
             email.text = item.email
             school.text = "Üniversite: " + item.school
             field.text = "Bölüm: " + item.field

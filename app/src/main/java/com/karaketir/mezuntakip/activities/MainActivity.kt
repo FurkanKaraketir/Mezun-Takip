@@ -3,6 +3,7 @@ package com.karaketir.mezuntakip.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +14,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.karaketir.mezuntakip.adapters.MainAdapter
 import com.karaketir.mezuntakip.databinding.ActivityMainBinding
-
+import com.karaketir.mezuntakip.services.openLink
 class MainActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
@@ -35,17 +36,40 @@ class MainActivity : ComponentActivity() {
         recyclerView = binding.mainRecycler
 
         val layoutManager = GridLayoutManager(applicationContext, 2)
+        val updateLayout = binding.updateLayout
+        val updateButton = binding.updateButton
+        val addPersonButton = binding.addPersonButton
+        val searchPersonButton = binding.searchPersonButton
+
+        db.collection("AdminData").document("version").get().addOnSuccessListener {
+            val myVersion = 4
+            val latestVersion = it.get("key").toString().toInt()
+            if (myVersion < latestVersion) {
+                updateLayout.visibility = View.VISIBLE
+                addPersonButton.visibility = View.GONE
+                searchPersonButton.visibility = View.GONE
+            }else{
+                updateLayout.visibility = View.GONE
+                addPersonButton.visibility = View.VISIBLE
+                searchPersonButton.visibility = View.VISIBLE
+            }}
+
+        updateButton.setOnClickListener {
+            openLink(
+                "https://play.google.com/store/apps/details?id=com.karaketir.mezuntakip", this
+            )
+        }
 
         recyclerView.layoutManager = layoutManager
         recyclerViewAdapter = MainAdapter(yearList)
         recyclerView.adapter = recyclerViewAdapter
 
-        binding.addPersonButton.setOnClickListener {
+        addPersonButton.setOnClickListener {
             val intent = Intent(this, AddPersonActivity::class.java)
             this.startActivity(intent)
         }
 
-        binding.searchPersonButton.setOnClickListener {
+        searchPersonButton.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
             this.startActivity(intent)
         }

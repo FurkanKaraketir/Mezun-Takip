@@ -10,5 +10,6 @@ class Person(
     var school: String,
     var field: String,
     var graduation: Boolean,
-    var description: String
+    var description: String,
+    var photoURL:String
 )

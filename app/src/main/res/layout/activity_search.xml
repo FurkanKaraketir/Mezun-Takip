@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,6 +8,7 @@
     tools:context=".activities.SearchActivity">
 
     <HorizontalScrollView
+        android:id="@+id/horView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -66,9 +67,11 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchBar"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/horView"
         android:layout_gravity="center_horizontal"
         android:layout_margin="25dp"
         android:hint="@string/ara">
@@ -85,7 +88,19 @@
         android:id="@+id/searchRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/searchBar"
         android:layout_margin="10dp" />
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/excelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="30dp"
+        android:text="@string/excel_e_aktar"
+        app:icon="@drawable/baseline_save_alt_24">
 
-</LinearLayout>
+    </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
+
+</RelativeLayout>

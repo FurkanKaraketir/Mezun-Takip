@@ -33,8 +33,5 @@ plugins {
 allprojects {
 
     repositories {
-
-
-
     }
 }
