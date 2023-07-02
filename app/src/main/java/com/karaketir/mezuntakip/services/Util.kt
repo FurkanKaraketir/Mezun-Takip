@@ -71,8 +71,8 @@ fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
         "column_6",
         "column_7",
         "column_8",
-        "column_8",
         "column_9",
+        "column_10",
 
         )
 
@@ -119,7 +119,7 @@ fun createExcel(
 ) {
 
     val time = Calendar.getInstance().time
-    val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    val formatter = SimpleDateFormat("yyyy-MM-dd HH-mm")
     val current = "Mezun Takip Tablosu " + formatter.format(time)
 
     val contentUri = MediaStore.Files.getContentUri("external")
@@ -284,11 +284,12 @@ fun addData(
     CellUtil.createCell(rowFake, 1, "Mezuniyet Yılı")
     CellUtil.createCell(rowFake, 2, "Bulunduğu İl")
     CellUtil.createCell(rowFake, 3, "Üniversite")
-    CellUtil.createCell(rowFake, 4, "Mezuniyet Durumu")
-    CellUtil.createCell(rowFake, 5, "Ek Not")
-    CellUtil.createCell(rowFake, 6, "Telefon")
-    CellUtil.createCell(rowFake, 7, "Email")
-    CellUtil.createCell(rowFake, 8, "Fotoğraf Link")
+    CellUtil.createCell(rowFake, 4, "Bölüm")
+    CellUtil.createCell(rowFake, 5, "Mezuniyet Durumu")
+    CellUtil.createCell(rowFake, 6, "Ek Not")
+    CellUtil.createCell(rowFake, 7, "Telefon")
+    CellUtil.createCell(rowFake, 8, "Email")
+    CellUtil.createCell(rowFake, 9, "Fotoğraf Link")
 
     var a = 1
     for (i in personList) {
@@ -297,16 +298,17 @@ fun addData(
         CellUtil.createCell(row, 1, i.year.toString())
         CellUtil.createCell(row, 2, i.city)
         CellUtil.createCell(row, 3, i.school)
+        CellUtil.createCell(row, 4, i.field)
 
         if (i.graduation) {
-            CellUtil.createCell(row, 4, "Mezun")
+            CellUtil.createCell(row, 5, "Mezun")
         } else {
-            CellUtil.createCell(row, 4, "Mezun Değil")
+            CellUtil.createCell(row, 5, "Mezun Değil")
         }
-        CellUtil.createCell(row, 5, i.description)
-        CellUtil.createCell(row, 6, "+90" + i.number.toString())
-        CellUtil.createCell(row, 7, i.email)
-        CellUtil.createCell(row, 8, i.photoURL)
+        CellUtil.createCell(row, 6, i.description)
+        CellUtil.createCell(row, 7, "+90" + i.number.toString())
+        CellUtil.createCell(row, 8, i.email)
+        CellUtil.createCell(row, 9, i.photoURL)
         a += 1
 
     }

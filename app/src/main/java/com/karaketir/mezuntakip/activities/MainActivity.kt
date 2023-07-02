@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
         val searchPersonButton = binding.searchPersonButton
 
         db.collection("AdminData").document("version").get().addOnSuccessListener {
-            val myVersion = 4
+            val myVersion = 5
             val latestVersion = it.get("key").toString().toInt()
             if (myVersion < latestVersion) {
                 updateLayout.visibility = View.VISIBLE

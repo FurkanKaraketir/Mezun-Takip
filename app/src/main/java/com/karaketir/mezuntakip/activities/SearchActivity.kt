@@ -119,6 +119,7 @@ class SearchActivity : AppCompatActivity() {
 
         db.collection("People").addSnapshotListener { value, _ ->
             personList.clear()
+            filteredList.clear()
             if (value != null) {
                 for (i in value) {
 
@@ -154,6 +155,7 @@ class SearchActivity : AppCompatActivity() {
 
 
                 }
+                filteredList = personList
             }
         }
 
@@ -199,7 +201,9 @@ class SearchActivity : AppCompatActivity() {
                                 if (name.lowercase(Locale.getDefault())
                                         .contains(p0.toString().lowercase(Locale.getDefault()))
                                 ) {
-                                    filteredList.add(item)
+                                    if (item !in filteredList) {
+                                        filteredList.add(item)
+                                    }
                                 }
                                 setupRecyclerView(filteredList)
 
